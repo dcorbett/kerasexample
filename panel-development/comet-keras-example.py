@@ -15,7 +15,7 @@ import os
 
 
 def get_comet_experiment():
-    return comet_ml.Experiment(project_name="gitlabexample")
+    return comet_ml.Experiment(project_name="bitbucketexample")
 
 
 def build_model_graph(experiment):
@@ -229,7 +229,7 @@ def main():
     opt = comet_ml.Optimizer(config, experiment_class)
 
     experiment_kwargs = {
-        "project_name": "gitlabexample",
+        "project_name": "bitbucketexample",
     }
 
     for experiment in opt.get_experiments(**experiment_kwargs):
