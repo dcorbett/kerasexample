@@ -1,0 +1,7 @@
+comet_ml
+keras
+tensorflow
+keract
+numpy
+pillow
+matplotlib
