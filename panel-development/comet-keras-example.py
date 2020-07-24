@@ -10,6 +10,8 @@ from keras.models import Sequential
 from keras.optimizers import RMSprop
 import keract
 import numpy as np
+import os
+
 
 
 def get_comet_experiment():
@@ -232,6 +234,8 @@ def main():
 
     for experiment in opt.get_experiments(**experiment_kwargs):
         experiment.log_parameter("epochs", 10)
+        experiment.log_html("Master")
+        experiment.set_name("Master")
 
         model = build_model_graph(experiment)
 
