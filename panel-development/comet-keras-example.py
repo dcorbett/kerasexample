@@ -3,6 +3,7 @@ from comet_ml import ConfusionMatrix
 
 import logging
 import keras
+from datetime import date
 from keras.callbacks import Callback
 from keras.datasets import mnist
 from keras.layers import Dense
@@ -13,9 +14,8 @@ import numpy as np
 import os
 
 
-
 def get_comet_experiment():
-    return comet_ml.Experiment(project_name="bitbucketexample")
+    return comet_ml.Experiment(log_env_details=False)
 
 
 def build_model_graph(experiment):
@@ -208,6 +208,7 @@ def get_dataset():
 
 
 def main():
+    today = date.today()
     x_train, y_train, x_test, y_test = get_dataset()
     config = {
         "algorithm": "bayes",
@@ -224,18 +225,26 @@ def main():
         },
         "trials": 1,
     }
+
     experiment_class = comet_ml.Experiment
-
     opt = comet_ml.Optimizer(config, experiment_class)
-
-    experiment_kwargs = {
-        "project_name": "bitbucketexample",
-    }
+    experiment_kwargs = {}
+    date_str = today.strftime("%Y_%m_%d")
 
     for experiment in opt.get_experiments(**experiment_kwargs):
-        experiment.log_parameter("epochs", 10)
-        experiment.log_html("Master")
-        experiment.set_name("Master")
+        experiment.log_parameter("epochs", 3)
+        experiment.log_html("<div> Some Html </div>")
+        for i in range(2):
+            experiment.log_html("<br>Code: " + str(i))
+        # experiment.log_system_info("someKey", "someValue")
+        # experiment.log_system_info("someSystemKey", "someSystemValue")
+        experiment.add_tag(date_str)
+        #experiment.log_text()
+
+        experiment.log_image("/Users/daven/Downloads/greenSquare.jpg", "my-image", step=1)
+        experiment.log_image("/Users/daven/Downloads/redSquare.jpg", "my-image", step=2)
+        experiment.log_image("/Users/daven/Downloads/blueSquare.jpg", "my-image", step=3)
+        experiment.log_image("/Users/daven/Downloads/yellowSquare.jpg", "my-image", step=4)
 
         model = build_model_graph(experiment)
 
